@@ -1,0 +1,13 @@
+# robots.txt for Attendance Calculator
+
+User-agent: *
+Allow: /
+
+# Block unnecessary files
+Disallow: /admin/
+Disallow: /private/
+Disallow: /scripts/
+Disallow: /assets/temp/
+
+# Sitemap (update this after deployment)
+Sitemap: https://attendance-calculator-tool.netlify.app/sitemap.xml

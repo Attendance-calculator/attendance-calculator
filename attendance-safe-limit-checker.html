@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Primary SEO Meta Tags -->
+    <title>How Many Classes Can I Miss? – Attendance Safe Limit Calculator</title>
+    <meta name="description" content="Find out how many classes you can safely miss without dropping below required attendance percentage like 75%. Simple and fast calculator for students.">
+    <meta name="keywords" content="attendance calculator, calculate attendance percentage, 75 percent attendance rule, 80 attendance rule, 85 attendance rule, how to calculate attendance, class presence tracker, college attendance, student attendance guide">
+    <link rel="canonical" href="https://yourdomain.netlify.app/">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Attendance Calculator & Academic Presence Handbook">
+    <meta property="og:description" content="Check your college attendance status instantly. Calculate exact classes needed to achieve safety (75%, 80%, 85%) or discover how many classes you can safely miss.">
+    <meta property="og:image" content="https://images.unsplash.com/photo-1506784983877-45594efa4cbe?q=80&w=600&auto=format&fit=crop">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Attendance Calculator & Academic Presence Handbook">
+    <meta property="twitter:description" content="Interactive class attendance percentage calculator with deep guides on maintaining and recovering academic compliance profiles.">
+
+    <!-- Google Fonts Import -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- MathJax for rendering equations cleanly -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']],
+                processEscapes: true
+            },
+            options: {
+                skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <!-- JSON-LD Structured Data for FAQ Rich Snippets -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "How is academic attendance percentage calculated?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Your attendance percentage is calculated by dividing the total number of classes you have attended by the total number of classes conducted, then multiplying the resulting fraction by 100. The math formula is: Attendance = (Classes Attended / Total Classes Conducted) * 100."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is the 75% attendance rule?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "The 75% attendance rule requires students to attend at least 75% of all conducted classes in a semester to remain eligible for examinations. Falling below this rate can lead to academic probation, grade drops, or loss of exam eligibility."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How many classes can I miss and stay above 75%?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "If your current percentage is above 75%, you can find the maximum classes you can miss using: floor((4 * Attended - 3 * Total) / 3). If this yields 0 or a negative, you cannot afford to miss any upcoming classes."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <style>
+        :root {
+            --primary: #4f46e5;
+            --primary-hover: #4338ca;
+            --primary-light: #eef2ff;
+            --primary-dark: #3730a3;
+            --slate-50: #f8fafc;
+            --slate-100: #f1f5f9;
+            --slate-200: #e2e8f0;
+            --slate-300: #cbd5e1;
+            --slate-400: #94a3b8;
+            --slate-500: #64748b;
+            --slate-600: #475569;
+            --slate-700: #334155;
+            --slate-800: #1e293b;
+            --slate-900: #0f172a;
+            --white: #ffffff;
+            
+            --success: #10b981;
+            --success-light: #ecfdf5;
+            --success-border: #a7f3d0;
+            --success-text: #065f46;
+
+            --warning: #f59e0b;
+            --warning-light: #fef3c7;
+            --warning-border: #fde68a;
+            --warning-text: #92400e;
+
+            --danger: #ef4444;
+            --danger-light: #fee2e2;
+            --danger-border: #fca5a5;
+            --danger-text: #991b1b;
+
+            --radius-lg: 16px;
+            --radius-md: 12px;
+            --radius-sm: 8px;
+            --shadow-sm: 0 1px 3px rgba(0,0,0,0.05), 0 1px 2px rgba(0,0,0,0.03);
+            --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            --shadow-lg: 0 10px 25px -5px rgba(0,0,0,0.05), 0 8px 10px -6px rgba(0,0,0,0.03);
+            --transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Base Styles */
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--slate-50);
+            color: var(--slate-900);
+            line-height: 1.6;
+            -webkit-font-smoothing: antialiased;
+            padding: 0 1rem;
+        }
+
+        header {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 3rem 1rem 1.5rem 1rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .header-logo {
+            background-color: var(--primary);
+            color: var(--white);
+            padding: 12px;
+            border-radius: var(--radius-lg);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.25);
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-logo svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            letter-spacing: -0.03em;
+            color: var(--slate-900);
+            margin-bottom: 0.75rem;
+        }
+
+        .header-sub {
+            color: var(--slate-500);
+            font-size: 1.1rem;
+            max-width: 650px;
+            margin-bottom: 1rem;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 0 auto;
+            padding: 1.5rem 0 3rem 0;
+        }
+
+        /* GRID: Split 60/40 to ensure compact inputs and visually dominant results on wider screens */
+        .grid-workspace {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 2rem;
+            margin-bottom: 4rem;
+        }
+
+        @media (min-width: 992px) {
+            .grid-workspace {
+                grid-template-columns: 1.2fr 0.8fr;
+            }
+        }
+
+        /* Core Panel Design (Containers) */
+        .panel-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--slate-200);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .panel-title-bar {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1.75rem;
+        }
+
+        .panel-bar-indicator {
+            width: 6px;
+            height: 24px;
+            background-color: var(--primary);
+            border-radius: 999px;
+        }
+
+        .panel-bar-indicator.emerald {
+            background-color: var(--success);
+        }
+
+        .panel-title {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            letter-spacing: -0.01em;
+        }
+
+        /* Form elements with absolute constraint to prevent widescreen stretching */
+        .form-section {
+            max-width: 480px; /* Forces input layout to look compact & intentional, never long rectangles */
+            width: 100%;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 0.875rem;
+            font-weight: 700;
+            color: var(--slate-700);
+            margin-bottom: 0.5rem;
+        }
+
+        .select-input, .text-input {
+            width: 100%;
+            border-radius: var(--radius-md);
+            border: 1px solid var(--slate-200);
+            background-color: #f8fafc;
+            padding: 0.85rem 1rem;
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: var(--slate-800);
+            transition: var(--transition);
+            outline: none;
+            font-family: inherit;
+        }
+
+        .select-input:focus, .text-input:focus {
+            border-color: var(--primary);
+            background-color: var(--white);
+            box-shadow: 0 0 0 4px var(--primary-light);
+        }
+
+        /* Custom styling for select wrapper to add chevron drop shadow */
+        .select-wrapper {
+            position: relative;
+        }
+
+        .select-input {
+            appearance: none;
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="%23475569" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>');
+            background-repeat: no-repeat;
+            background-position: right 1rem center;
+            background-size: 1.25rem;
+            padding-right: 2.5rem;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+        }
+
+        @media (min-width: 480px) {
+            .input-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .action-button {
+            background-color: var(--primary);
+            color: var(--white);
+            font-weight: 700;
+            padding: 0.9rem 1.75rem;
+            border-radius: var(--radius-md);
+            border: none;
+            cursor: pointer;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            transition: var(--transition);
+            box-shadow: 0 4px 6px -1px rgba(79, 70, 229, 0.1), 0 2px 4px -1px rgba(79, 70, 229, 0.06);
+            margin-top: 1.5rem;
+            font-size: 0.95rem;
+            font-family: inherit;
+        }
+
+        .action-button:hover {
+            background-color: var(--primary-hover);
+            box-shadow: 0 10px 15px -3px rgba(79, 70, 229, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .error-container {
+            margin-top: 1rem;
+            padding: 0.85rem;
+            background-color: var(--danger-light);
+            border: 1px solid var(--danger-border);
+            color: var(--danger-text);
+            border-radius: var(--radius-md);
+            font-size: 0.825rem;
+            font-weight: 600;
+            display: none;
+        }
+
+        /* Diagnostic Outputs Panel styling */
+        .results-box {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 2rem 0;
+            min-height: 250px;
+        }
+
+        .placeholder-state {
+            text-align: center;
+            max-width: 280px;
+        }
+
+        .placeholder-icon {
+            width: 64px;
+            height: 64px;
+            background-color: var(--slate-50);
+            border: 1px solid var(--slate-100);
+            border-radius: var(--radius-lg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 1.25rem auto;
+            color: var(--slate-400);
+        }
+
+        .placeholder-icon svg {
+            width: 32px;
+            height: 32px;
+        }
+
+        .placeholder-text {
+            color: var(--slate-500);
+            font-size: 0.9rem;
+            font-weight: 500;
+            line-height: 1.5;
+        }
+
+        /* Result States */
+        .calculations-box {
+            width: 100%;
+        }
+
+        .state-badge-container {
+            text-align: center;
+            margin-bottom: 0.5rem;
+        }
+
+        .status-pill {
+            display: inline-block;
+            font-size: 0.75rem;
+            font-weight: 800;
+            letter-spacing: 0.08em;
+            text-transform: uppercase;
+            padding: 0.35rem 1rem;
+            border-radius: 999px;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .status-pill.safe {
+            background-color: var(--success-light);
+            color: var(--success-text);
+            border: 1px solid var(--success-border);
+        }
+
+        .status-pill.warning {
+            background-color: var(--warning-light);
+            color: var(--warning-text);
+            border: 1px solid var(--warning-border);
+        }
+
+        .status-pill.danger {
+            background-color: var(--danger-light);
+            color: var(--danger-text);
+            border: 1px solid var(--danger-border);
+        }
+
+        .pct-display {
+            font-size: 4rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            letter-spacing: -0.04em;
+            text-align: center;
+            margin-bottom: 0.75rem;
+        }
+
+        .message-alert-box {
+            font-size: 0.9rem;
+            font-weight: 600;
+            border-radius: var(--radius-md);
+            padding: 0.9rem 1.25rem;
+            text-align: center;
+            margin-bottom: 1.5rem;
+            border: 1px solid transparent;
+        }
+
+        .message-alert-box.safe {
+            background-color: var(--success-light);
+            color: var(--success-text);
+            border-color: var(--success-border);
+        }
+
+        .message-alert-box.warning {
+            background-color: var(--warning-light);
+            color: var(--warning-text);
+            border-color: var(--warning-border);
+        }
+
+        .message-alert-box.danger {
+            background-color: var(--danger-light);
+            color: var(--danger-text);
+            border-color: var(--danger-border);
+        }
+
+        .diagnostics-detail-list {
+            border-top: 1px solid var(--slate-100);
+            padding-top: 1.25rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            color: var(--slate-500);
+        }
+
+        .diagnostic-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.35rem 0;
+        }
+
+        .diagnostic-row strong {
+            color: var(--slate-800);
+            font-weight: 700;
+        }
+
+        .diagnostic-action-block {
+            border-top: 1px solid var(--slate-100);
+            margin-top: 1rem;
+            padding-top: 1rem;
+            color: var(--slate-700);
+        }
+
+        /* Accordion Custom Framework */
+        .drawer-accordion {
+            margin-top: 1.25rem;
+            display: none;
+        }
+
+        .accordion-trigger {
+            width: 100%;
+            background-color: var(--slate-100);
+            border: none;
+            border-radius: var(--radius-md);
+            padding: 0.85rem 1.25rem;
+            font-family: inherit;
+            font-size: 0.825rem;
+            font-weight: 700;
+            color: var(--slate-700);
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: var(--transition);
+        }
+
+        .accordion-trigger:hover {
+            background-color: var(--slate-200);
+        }
+
+        .accordion-trigger svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.2s ease;
+        }
+
+        .accordion-trigger.active svg {
+            transform: rotate(180deg);
+        }
+
+        .accordion-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: var(--slate-50);
+            border-radius: 0 0 var(--radius-md) var(--radius-md);
+            border-left: 1px solid var(--slate-200);
+            border-right: 1px solid var(--slate-200);
+            border-bottom: 1px solid var(--slate-200);
+        }
+
+        .accordion-list {
+            padding: 1.25rem;
+            list-style-type: none;
+        }
+
+        .accordion-list li {
+            position: relative;
+            font-size: 0.825rem;
+            font-weight: 500;
+            color: var(--slate-600);
+            padding-left: 1.25rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .accordion-list li:last-child {
+            margin-bottom: 0;
+        }
+
+        .accordion-list li::before {
+            content: "";
+            position: absolute;
+            left: 0;
+            top: 7px;
+            width: 6px;
+            height: 6px;
+            background-color: var(--primary);
+            border-radius: 50%;
+        }
+
+        /* Divider */
+        .hub-divider {
+            border: 0;
+            height: 1px;
+            background-color: var(--slate-200);
+            margin: 4rem 0;
+        }
+
+        /* Educational Handbook Grid */
+        .handbook-header {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 3rem auto;
+        }
+
+        .handbook-header h2 {
+            font-size: 1.85rem;
+            font-weight: 800;
+            letter-spacing: -0.02em;
+            color: var(--slate-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .handbook-header p {
+            color: var(--slate-500);
+            font-size: 0.95rem;
+        }
+
+        .handbook-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 2.5rem;
+            margin-bottom: 4rem;
+        }
+
+        .handbook-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--slate-200);
+            padding: 2rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .handbook-card h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 1.25rem;
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .handbook-card h3 svg {
+            width: 24px;
+            height: 24px;
+            color: var(--primary);
+        }
+
+        .handbook-card p {
+            font-size: 0.95rem;
+            color: var(--slate-600);
+            margin-bottom: 1.25rem;
+            line-height: 1.7;
+        }
+
+        .math-block {
+            background-color: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            margin: 1.5rem 0;
+            display: flex;
+            justify-content: center;
+            overflow-x: auto;
+        }
+
+        .handbook-card h4 {
+            font-size: 1rem;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-top: 1.75rem;
+            margin-bottom: 0.75rem;
+        }
+
+        .handbook-list {
+            list-style: decimal;
+            margin-left: 1.5rem;
+            margin-top: 0.75rem;
+            font-size: 0.9rem;
+            color: var(--slate-600);
+        }
+
+        .handbook-list li {
+            margin-bottom: 0.75rem;
+            padding-left: 0.25rem;
+            line-height: 1.6;
+        }
+
+        .handbook-list li strong {
+            color: var(--slate-900);
+        }
+
+        /* 2-column layout for regional setups */
+        .regional-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+            margin-top: 1.25rem;
+        }
+
+        @media (min-width: 768px) {
+            .regional-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
+
+        .region-card {
+            background-color: var(--slate-50);
+            border: 1px solid var(--slate-100);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+        }
+
+        .region-card h4 {
+            margin-top: 0;
+            margin-bottom: 0.5rem;
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--slate-900);
+        }
+
+        .region-card p {
+            font-size: 0.825rem;
+            color: var(--slate-600);
+            line-height: 1.5;
+            margin-bottom: 0;
+        }
+
+        /* Interactive Email Template Generator Box */
+        .email-workspace {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        @media (min-width: 992px) {
+            .email-workspace {
+                grid-template-columns: 1fr 1.2fr;
+            }
+        }
+
+        .email-form {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+        }
+
+        .email-preview-container {
+            position: relative;
+            background-color: var(--slate-50);
+            border: 1px solid var(--slate-200);
+            border-radius: var(--radius-md);
+            padding: 1.25rem;
+            max-width: 100%;
+        }
+
+        .email-copy-btn {
+            position: absolute;
+            top: 0.75rem;
+            right: 0.75rem;
+            background-color: var(--white);
+            color: var(--slate-700);
+            border: 1px solid var(--slate-200);
+            padding: 0.4rem 0.85rem;
+            border-radius: var(--radius-sm);
+            font-size: 0.75rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: var(--transition);
+            box-shadow: var(--shadow-sm);
+        }
+
+        .email-copy-btn:hover {
+            background-color: var(--slate-100);
+            color: var(--primary-dark);
+            border-color: var(--primary-light);
+        }
+
+        .email-copy-btn.copied {
+            background-color: var(--primary);
+            color: var(--white);
+            border-color: var(--primary);
+        }
+
+        .email-box-pre {
+            font-family: inherit;
+            font-size: 0.825rem;
+            color: var(--slate-600);
+            white-space: pre-wrap;
+            word-wrap: break-word;
+            line-height: 1.6;
+            margin-top: 2rem;
+        }
+
+        /* Massive Directory of Frequently Asked Questions */
+        .faq-card {
+            background-color: var(--white);
+            border-radius: var(--radius-lg);
+            border: 1px solid var(--slate-200);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-sm);
+        }
+
+        .faq-card h3 {
+            font-size: 1.35rem;
+            font-weight: 800;
+            color: var(--slate-900);
+            margin-bottom: 2rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid var(--slate-100);
+        }
+
+        .faq-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 1.75rem;
+        }
+
+        .faq-item h4 {
+            font-size: 0.95rem;
+            font-weight: 700;
+            color: var(--slate-900);
+            margin-bottom: 0.5rem;
+        }
+
+        .faq-item p {
+            font-size: 0.85rem;
+            color: var(--slate-500);
+            line-height: 1.6;
+        }
+
+        /* Footer styling */
+        footer {
+            border-top: 1px solid var(--slate-200);
+            padding: 2.5rem 1rem;
+            margin-top: 5rem;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--slate-400);
+        }
+
+        footer p {
+            margin-bottom: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Brand Header -->
+    <header>
+        <div class="header-logo">
+            <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <h1>Attendance Calculator</h1>
+        <p class="header-sub">
+            Calculate your physical academic presence rates instantly. Keep track of 75%, 80%, or 85% compliance rules, compute buffers, and download excuse emails.
+        </p>
+    </header>
+
+    <!-- MAIN GRID CONTAINER -->
+    <main>
+        
+        <!-- Calculator & Analysis Diagnostic Grid -->
+        <div class="grid-workspace">
+            
+            <!-- Left inputs (compact max-width layout configuration) -->
+            <section class="panel-card">
+                <div>
+                    <div class="panel-title-bar">
+                        <div class="panel-bar-indicator"></div>
+                        <h2 class="panel-title">Academic Parameters</h2>
+                    </div>
+
+                    <div class="form-section">
+                        <!-- Custom Select Dropdown -->
+                        <div class="form-group">
+                            <label for="required-threshold" class="form-label">Required Attendance Threshold</label>
+                            <div class="select-wrapper">
+                                <select id="required-threshold" class="select-input">
+                                    <option value="75" selected>75% Rule (Standard University Policies)</option>
+                                    <option value="80">80% Rule (Professional Seminars & Labs)</option>
+                                    <option value="85">85% Rule (Strict Medical & Clinical Rotations)</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <!-- Combined horizontal compact input row -->
+                        <div class="input-row">
+                            <div class="form-group">
+                                <label for="total-classes" class="form-label">Total Conducted Classes</label>
+                                <input 
+                                    type="number" 
+                                    id="total-classes" 
+                                    placeholder="e.g. 60" 
+                                    min="1" 
+                                    step="1"
+                                    inputmode="numeric"
+                                    class="text-input"
+                                    required
+                                >
+                            </div>
+
+                            <div class="form-group">
+                                <label for="attended-classes" class="form-label">Classes Attended</label>
+                                <input 
+                                    type="number" 
+                                    id="attended-classes" 
+                                    placeholder="e.g. 48" 
+                                    min="0" 
+                                    step="1"
+                                    inputmode="numeric"
+                                    class="text-input"
+                                    required
+                                >
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div>
+                    <button id="calc-btn" class="action-button">
+                        Run Diagnostics
+                    </button>
+                    <!-- Input validation errors -->
+                    <div id="error-box" class="error-container"></div>
+                </div>
+            </section>
+
+            <!-- Right diagnostics panel -->
+            <section class="panel-card">
+                <div>
+                    <div class="panel-title-bar">
+                        <div class="panel-bar-indicator emerald" id="diag-bar"></div>
+                        <h2 class="panel-title">Live Diagnostics</h2>
+                    </div>
+
+                    <div id="results-wrapper" class="results-box">
+                        <!-- Default state -->
+                        <div id="placeholder-box" class="placeholder-state">
+                            <div class="placeholder-icon">
+                                <svg fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
+                            </div>
+                            <p class="placeholder-text">Input your metrics to calculate standing, buffers, and consecutive safety targets instantly.</p>
+                        </div>
+
+                        <!-- Calculations Output -->
+                        <div id="calculations-output" class="calculations-box" style="display: none;">
+                            <div class="state-badge-container">
+                                <span id="output-badge" class="status-pill"></span>
+                            </div>
+                            <div id="output-pct" class="pct-display">0%</div>
+                            <div id="output-msg" class="message-alert-box"></div>
+
+                            <div id="output-details" class="diagnostics-detail-list">
+                                <!-- Generated programmatically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Custom Action Drawer (Accordion) -->
+                <div class="drawer-accordion" id="tips-accordion-container">
+                    <button id="accordion-toggle" class="accordion-trigger">
+                        <span>How can I recover my attendance?</span>
+                        <svg fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"></path>
+                        </svg>
+                    </button>
+                    <div id="accordion-panel" class="accordion-panel">
+                        <ul class="accordion-list">
+                            <li>Attend upcoming classes consistently to quickly lift your percentage baseline.</li>
+                            <li>Avoid casual or unnecessary leaves; reserve absences strictly for true emergencies.</li>
+                            <li>Track your cumulative and weekly attendance values to review margins.</li>
+                            <li>Communicate proactively with your faculty if unexpected medical constraints occur.</li>
+                            <li>Plan planned personal leaves around lower-weight class schedules.</li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <hr class="hub-divider">
+
+        <!-- Handbook Portal Area (80% Educational content) -->
+        <section id="handbook-hub">
+            <div class="handbook-header">
+                <h2>The Academic Presence Handbook</h2>
+                <p>An encyclopedic guide to calculating ratios, navigating university compliance structures, and managing attendance deficits.</p>
+            </div>
+
+            <div class="handbook-stack">
+                
+                <!-- Card 1: Math Frameworks -->
+                <article class="handbook-card">
+                    <h3>
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M9 7h6m0 10v-3m-3 3h.01M9 17h.01M9 14h.01M12 11h.01M12 7h.01M9 10h.01M15 7h.01M15 11h.01M15 14h.01M12 14h.01M12 17h.01M15 17h.01M12 12h.01M12 9h.01M12 14h.01M12 17h.01M3 12a9 9 0 1118 0 9 9 0 01-18 0z"></path>
+                        </svg>
+                        Understanding Academic Attendance Mathematics
+                    </h3>
+                    <p>
+                        Your cumulative attendance rate is determined by the ratio of hours attended to total conducted classroom hours. The standard mathematical expression is:
+                    </p>
+                    <div class="math-block">
+                        $$P = \left( \frac{A}{T} \right) \times 100$$
+                    </div>
+                    <p>
+                        Where $P$ represents your current percentage, $A$ represents your total attended hours, and $T$ represents the total hours conducted by your instructor.
+                    </p>
+                    
+                    <h4>Calculating Your Path to Safety</h4>
+                    <p>
+                        If your percentage has dropped below your threshold requirement ($R$), you must determine the number of consecutive upcoming sessions ($N$) you have to attend to achieve safety:
+                    </p>
+                    <div class="math-block">
+                        $$N = \left\lceil \frac{(R \cdot T) - (100 \cdot A)}{100 - R} \right\rceil$$
+                    </div>
+                    <p>
+                        Conversely, if you are securely above your target, you can find the maximum classes ($M$) you can miss before dipping below your threshold using:
+                    </p>
+                    <div class="math-block">
+                        $$M = \left\lfloor \frac{(100 \cdot A) - (R \cdot T)}{R} \right\rfloor$$
+                    </div>
+                </article>
+
+                <!-- Card 2: Contact Hours -->
+                <article class="handbook-card">
+                    <h3>
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
+                        </svg>
+                        Understanding Credit Hours and Course Weights
+                    </h3>
+                    <p>
+                        Many universities use <strong>Contact Hours</strong> or <strong>Credit Weights</strong> instead of session counts. A 4-credit course meeting for 4 hours a week has twice the weight of a 2-credit course meeting for 2 hours a week.
+                    </p>
+                    <p>
+                        If you are tracking attendance across an entire semester, calculate the cumulative average weighted by credit hours:
+                    </p>
+                    <div class="math-block">
+                        $$P_{weighted} = \frac{\sum (P_i \cdot C_i)}{\sum C_i}$$
+                    </div>
+                    <p>
+                        Where $P_i$ is your attendance percentage in course $i$, and $C_i$ represents the credit weight of that course. Low attendance in a high-credit course will significantly drag down your overall academic profile.
+                    </p>
+                    
+                    <h4>The Direct Grade Penalty Weighting Formula</h4>
+                    <p>
+                        In many syllabi, attendance/participation represents a direct, fixed portion of your final numerical grade (often $10\%$ to $15\%$). If you fall below a certain baseline, your grade is systematically penalized:
+                    </p>
+                    <div class="math-block">
+                        $$G_{final} = G_{academic} \times (1 - w_{att}) + P(A, T) \times w_{att}$$
+                    </div>
+                    <p>
+                        Where $w_{att}$ is the weight of participation, $G_{academic}$ is your performance on tests/assignments, and $P(A, T)$ is your physical presence score. If $P < 75$, then $P(A, T)$ may drop to zero immediately, resulting in an automatic letter-grade penalty.
+                    </p>
+                </article>
+
+                <!-- Card 3: Global Legal Structures -->
+                <article class="handbook-card">
+                    <h3>
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
+                        </svg>
+                        Global Institutional Compliance Frameworks
+                    </h3>
+                    <p>
+                        Educational ministries around the world mandate class tracking to ensure the validity of degrees and proper allocation of state funding.
+                    </p>
+
+                    <div class="regional-grid">
+                        <div class="region-card">
+                            <h4>United States (Title IV Audits)</h4>
+                            <p>Under federal student aid guidelines, institutions must document "Last Date of Attendance" (LDA) records. If a student stops attending classes without dropping, the school must return a portion of Title IV federal grants, resulting in student debt.</p>
+                        </div>
+                        <div class="region-card">
+                            <h4>United Kingdom (UKVI Visas)</h4>
+                            <p>The UK Visas and Immigration (UKVI) department enforces rigid audit trails. Universities acting as student sponsors must report international students who miss more than 10 consecutive points of interaction, leading to immediate visa cancellation.</p>
+                        </div>
+                        <div class="region-card">
+                            <h4>Australia (ESOS Act & National Code)</h4>
+                            <p>International students on a subclass 500 visa are bound by the ESOS National Code. Universities must monitor course progress and report any student whose attendance drops below 80% to immigration authorities.</p>
+                        </div>
+                        <div class="region-card">
+                            <h4>India (UGC Regulations)</h4>
+                            <p>The University Grants Commission (UGC) enforces a strict 75% baseline across standard colleges. Students falling below this requirement are routinely disqualified from taking semester-end theory and practical examinations.</p>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 4: Absence Buffer Strategy -->
+                <article class="handbook-card">
+                    <h3>
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                        </svg>
+                        The Absence Buffer Strategy
+                    </h3>
+                    <p>
+                        Rather than treating attendance boundaries as restrictions, view the permissible absence margin as an <strong>"Absence Bank."</strong> This buffer is designed to cover illness, interviews, mental health breaks, and family matters.
+                    </p>
+                    <p>
+                        To budget your absence bank effectively, follow this structured plan:
+                    </p>
+                    <ul class="handbook-list">
+                        <li><strong>Preserve early buffers:</strong> Avoid skipping classes in the first 4-6 weeks. Building a 100% presence rating early creates a safety net for later in the semester.</li>
+                        <li><strong>Map high-weight days:</strong> Never miss classes on midterms, peer review workshops, or practical lab sessions where absences are penalized more heavily.</li>
+                        <li><strong>Factor in group dynamics:</strong> Skipping discussion classes or group work sessions damages peer relationships, which can indirectly affect your grades.</li>
+                    </ul>
+                </article>
+
+                <!-- Card 5: Interactive Email Template Builder -->
+                <article class="handbook-card">
+                    <h3>
+                        <svg fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+                        </svg>
+                        Excused Absence Email Builder
+                    </h3>
+                    <p>If you missed a class due to illness or an emergency, use this tool to quickly draft a professional email to your instructor.</p>
+
+                    <div class="email-workspace">
+                        <div class="email-form">
+                            <div class="form-group">
+                                <label for="email-prof" class="form-label">Professor Name</label>
+                                <input type="text" id="email-prof" value="Professor Miller" class="text-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-course" class="form-label">Course Name / Code</label>
+                                <input type="text" id="email-course" value="Biology 101" class="text-input">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-reason" class="form-label">Reason for Absence</label>
+                                <div class="select-wrapper">
+                                    <select id="email-reason" class="select-input">
+                                        <option value="a sudden medical issue">Medical Appointment / Illness</option>
+                                        <option value="an urgent family emergency">Family Emergency</option>
+                                        <option value="unforeseen transportation issues">Transportation / Travel Issues</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="email-preview-container">
+                            <button id="copy-btn" class="email-copy-btn">Copy Email</button>
+                            <pre id="email-template-output" class="email-box-pre"></pre>
+                        </div>
+                    </div>
+                </article>
+
+                <!-- Card 6: Massive FAQ Directory -->
+                <article class="faq-card">
+                    <h3>Frequently Asked Questions</h3>
+                    <div class="faq-stack">
+                        <div class="faq-item">
+                            <h4>What happens if my attendance falls below 75%?</h4>
+                            <p>Typically, falling below the standard threshold can disqualify you from taking the course's final examination, result in an automatic failing grade (such as an "F" or "FN"), or void your course registration.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>How do late arrivals (tardiness) affect my record?</h4>
+                            <p>Many instructors count arriving more than 10 to 15 minutes late as a tardy. In most course policies, accumulating three tardy logs is equivalent to one unexcused absence on your record.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>How are cancelled classes calculated?</h4>
+                            <p>When an instructor officially cancels a class, that session is removed from both the numerator (attended classes) and the denominator (total conducted classes), meaning it has no negative effect on your percentage.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>What is the difference between excused and unexcused absences?</h4>
+                            <p>An excused absence is backed by official medical notes, dean-approved letters, or athletic travel orders. An unexcused absence is any missed class without verified paperwork, such as oversleeping or personal travel, which directly lowers your percentage.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>Does online class presence count the same way?</h4>
+                            <p>Yes. Online courses track participation through Zoom logs, discussion board submissions, weekly quiz attempts, or active camera-on policies during live sessions.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>How does low attendance impact student visas?</h4>
+                            <p>International student visas (like F-1 or J-1) require maintaining full-time enrollment and consistent attendance. Dropping below your school's minimum threshold can result in enrollment termination and immigration status cancellation.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>Can a professor retroactively change my attendance record?</h4>
+                            <p>Yes. If you submit a valid medical certificate or resolve a clerical error within your department's designated window (usually 5 to 7 business days), your instructor can adjust your records.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>Can I appeal an examination ban if my attendance is low?</h4>
+                            <p>Yes. Most universities have a formal appeals committee. If your attendance is low due to severe medical issues, mental health struggles, or personal hardships, you can submit an appeal along with medical certificates or letters of support.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>Does auditing a class require maintaining attendance?</h4>
+                            <p>Yes, in most cases. Even if you are auditing a course (taking it without receiving credit), instructors often require a minimum level of attendance (such as 75%) to keep the "AU" marker on your official transcript.</p>
+                        </div>
+
+                        <div class="faq-item">
+                            <h4>What are participation grades, and how are they calculated?</h4>
+                            <p>Participation grades differ from raw attendance. They evaluate your active contribution to discussions, preparation level, and peer collaborations, meaning simply showing up physically may not guarantee full marks.</p>
+                        </div>
+                    </div>
+                </article>
+
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 Academic Planning Portal. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const thresholdSelect = document.getElementById('required-threshold');
+            const totalInput = document.getElementById('total-classes');
+            const attendedInput = document.getElementById('attended-classes');
+            const calcBtn = document.getElementById('calc-btn');
+            
+            const errorBox = document.getElementById('error-box');
+            const placeholderBox = document.getElementById('placeholder-box');
+            const calcsOutput = document.getElementById('calculations-output');
+            
+            const outputBadge = document.getElementById('output-badge');
+            const outputPct = document.getElementById('output-pct');
+            const outputMsg = document.getElementById('output-msg');
+            const outputDetails = document.getElementById('output-details');
+            const diagBar = document.getElementById('diag-bar');
+            
+            const tipsAccordion = document.getElementById('tips-accordion-container');
+            const accordionToggle = document.getElementById('accordion-toggle');
+            const accordionPanel = document.getElementById('accordion-panel');
+
+            // Email template inputs
+            const emailProf = document.getElementById('email-prof');
+            const emailCourse = document.getElementById('email-course');
+            const emailReason = document.getElementById('email-reason');
+            const emailOutput = document.getElementById('email-template-output');
+            const copyBtn = document.getElementById('copy-btn');
+
+            // Set up real-time event monitoring for calculations
+            thresholdSelect.addEventListener('change', runCalculations);
+            totalInput.addEventListener('input', runCalculations);
+            attendedInput.addEventListener('input', runCalculations);
+            calcBtn.addEventListener('click', runCalculations);
+
+            // Set up real-time email customizer logs
+            emailProf.addEventListener('input', updateEmailTemplate);
+            emailCourse.addEventListener('input', updateEmailTemplate);
+            emailReason.addEventListener('change', updateEmailTemplate);
+
+            // Accordion toggle script
+            accordionToggle.addEventListener('click', () => {
+                accordionToggle.classList.toggle('active');
+                if (accordionPanel.style.maxHeight && accordionPanel.style.maxHeight !== '0px') {
+                    accordionPanel.style.maxHeight = '0px';
+                } else {
+                    accordionPanel.style.maxHeight = accordionPanel.scrollHeight + 'px';
+                }
+            });
+
+            // Initialize email template on load
+            updateEmailTemplate();
+
+            // Set up copy action
+            copyBtn.addEventListener('click', () => {
+                copyToClipboard();
+            });
+
+            function runCalculations() {
+                const targetThreshold = parseFloat(thresholdSelect.value);
+                const total = parseInt(totalInput.value, 10);
+                const attended = parseInt(attendedInput.value, 10);
+
+                // Clear previous validation error messages
+                errorBox.style.display = 'none';
+                errorBox.textContent = '';
+
+                // If values are empty or not numbers, restore default placeholder
+                if (isNaN(total) || isNaN(attended)) {
+                    showPlaceholder();
+                    return;
+                }
+
+                // Strict numerical checks
+                if (total <= 0) {
+                    showError("Total classes conducted must be greater than 0.");
+                    return;
+                }
+                if (attended < 0) {
+                    showError("Attended classes cannot be a negative value.");
+                    return;
+                }
+                if (attended > total) {
+                    showError("Attended classes cannot exceed total conducted classes.");
+                    return;
+                }
+
+                // Transition UI state
+                placeholderBox.style.display = 'none';
+                calcsOutput.style.display = 'block';
+
+                // Basic percentage formula calculation
+                const percentage = parseFloat(((attended / total) * 100).toFixed(1));
+                outputPct.textContent = `${percentage}%`;
+
+                let badgeText = '';
+                let badgeClass = '';
+                let msgText = '';
+                let msgClass = '';
+                let diagColor = '';
+                let marginText = '';
+
+                if (percentage >= targetThreshold) {
+                    // Safe state setup
+                    badgeText = 'Safe';
+                    badgeClass = 'safe';
+                    msgText = 'You are safe, keep maintaining your attendance.';
+                    msgClass = 'safe';
+                    diagColor = 'var(--success)';
+                    
+                    // Hide accordion automatically to keep panel tidy
+                    tipsAccordion.style.display = 'none';
+                    accordionPanel.style.maxHeight = '0px';
+                    accordionToggle.classList.remove('active');
+
+                    // Calculate safe missable class buffer
+                    // Formula: floor(((100 * A) - (R * T)) / R)
+                    const safeToMiss = Math.floor(((100 * attended) - (targetThreshold * total)) / targetThreshold);
+                    if (safeToMiss > 0) {
+                        marginText = `<div class="diagnostic-action-block"><p>Safe margin: <strong>You can miss up to ${safeToMiss} upcoming class${safeToMiss > 1 ? 'es' : ''}</strong> without dropping below your target of ${targetThreshold}%.</p></div>`;
+                    } else {
+                        marginText = `<div class="diagnostic-action-block"><p>Safe margin: <strong>You cannot afford to miss any upcoming classes</strong> if you want to remain above ${targetThreshold}%.</p></div>`;
+                    }
+
+                } else {
+                    // Warning or Risk classification based on proximity to target threshold
+                    const dangerLine = targetThreshold - 15; // 15% below target represents the warning floor
+
+                    if (percentage >= dangerLine) {
+                        badgeText = 'Warning';
+                        badgeClass = 'warning';
+                        msgText = 'You are close to risk, try not to miss more classes.';
+                        msgClass = 'warning';
+                        diagColor = 'var(--warning)';
+                    } else {
+                        // Avoid generic "Danger" terms, tag clearly as "At Risk"
+                        badgeText = 'At Risk';
+                        badgeClass = 'danger';
+                        msgText = 'Low attendance risk, you should improve your attendance.';
+                        msgClass = 'danger';
+                        diagColor = 'var(--danger)';
+                    }
+
+                    // Reveal improvement tips
+                    tipsAccordion.style.display = 'block';
+
+                    // Calculate consecutive classes required to catch up
+                    // Formula: ceil(((R * T) - (100 * A)) / (100 - R))
+                    const needed = Math.max(0, Math.ceil(((targetThreshold * total) - (100 * attended)) / (100 - targetThreshold)));
+                    marginText = `<div class="diagnostic-action-block"><p>Action Required: <strong>Attend the next ${needed} consecutive class${needed > 1 ? 'es' : ''}</strong> to recover to ${targetThreshold}%.</p></div>`;
+                }
+
+                // Append and build diagnostic summary items
+                let detailLines = `
+                    <div class="diagnostic-row">
+                        <span>Current Ratio:</span>
+                        <strong>${attended} / ${total} sessions</strong>
+                    </div>
+                    <div class="diagnostic-row">
+                        <span>Threshold Target:</span>
+                        <strong>${targetThreshold}% Minimum</strong>
+                    </div>
+                    ${marginText}
+                `;
+
+                outputBadge.textContent = badgeText;
+                outputBadge.className = `status-pill ${badgeClass}`;
+                
+                outputMsg.textContent = msgText;
+                outputMsg.className = `message-alert-box ${msgClass}`;
+                
+                outputDetails.innerHTML = detailLines;
+                diagBar.style.backgroundColor = diagColor;
+            }
+
+            function showPlaceholder() {
+                placeholderBox.style.display = 'flex';
+                calcsOutput.style.display = 'none';
+                tipsAccordion.style.display = 'none';
+                accordionPanel.style.maxHeight = '0px';
+                accordionToggle.classList.remove('active');
+                diagBar.style.backgroundColor = 'var(--primary)';
+            }
+
+            function showError(message) {
+                showPlaceholder();
+                errorBox.textContent = message;
+                errorBox.style.display = 'block';
+            }
+
+            function updateEmailTemplate() {
+                const prof = emailProf.value.trim() || "[Professor Name]";
+                const course = emailCourse.value.trim() || "[Course Name/Code]";
+                const reason = emailReason.value;
+
+                const template = `Subject: Absence Excuse Request - ${course}
+
+Dear ${prof},
+
+I am writing to apologize for missing our scheduled class for ${course}. Unfortunately, I was unable to attend due to ${reason}.
+
+I want to ensure that I stay on track with the course materials. I am reaching out to ask if there are any make-up assignments, lecture slides, or readings that I should review to make up for the missed hours.
+
+Thank you for your understanding and support.
+
+Best regards,
+
+[Your Name]
+[Student ID]`;
+
+                emailOutput.textContent = template;
+            }
+
+            // Copy template to clipboard utility using legacy compatible command execution
+            function copyToClipboard() {
+                const emailText = emailOutput.textContent;
+                const tempTextArea = document.createElement('textarea');
+                tempTextArea.value = emailText;
+                document.body.appendChild(tempTextArea);
+                tempTextArea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    copyBtn.textContent = 'Copied!';
+                    copyBtn.classList.add('copied');
+                    
+                    setTimeout(() => {
+                        copyBtn.textContent = 'Copy Email';
+                        copyBtn.classList.remove('copied');
+                    }, 1500);
+                } catch (err) {
+                    console.error('Failed to copy text: ', err);
+                }
+                
+                document.body.removeChild(tempTextArea);
+            }
+        });
+    </script>
+</body>
+</html>
